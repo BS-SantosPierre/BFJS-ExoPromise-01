@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<style>
+		@import url('https://fonts.googleapis.com/css2?family=Amatic+SC&family=Dancing+Script:wght@700&display=swap');
+	</style>
+	<link rel="stylesheet" href="./styles/style.css">
+</head>
+<body>
+	<h1>Random Posts</h1>
+	<button>
+		Get Random Post
+	</button>
+	<section id="post" class="center"></section>
+	<script src="./scripts/jquery.js"></script>
+	<script>
+		$(document).ready(() => {
+			$('button').click(() => {
+				const random = Math.floor((Math.random() * 125));
+				$('#post').empty();
+				$('#post').append("<div class=\"lds-heart\"><div></div></div>")
+				$.ajax({
+					method: 'GET',
+					url: `https://jsonplaceholder.typicode.com/posts/${random}`,
+					accepts: 'application/json'
+				}).done((data) => {
+					$('#post').empty();
+					$('#post').append(`<h2>${data.title}</h2>`);
+					$('#post').append(`<p>${data.body}</p>`);
+				}).fail((err) => {
+					$('#post').empty();
+					$('#post').append(`<h3>${err.status}</h3>`);
+					$('#post').append(`<p>${err.statusText}</p>`);
+				}).always(() => {
+					console.log('COMPLETED');
+				})
+			})
+		});
+	</script>
+</body>
+</html>
